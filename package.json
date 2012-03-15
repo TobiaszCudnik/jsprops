@@ -1,0 +1,33 @@
+{
+	"name": "jsprops",
+	"description": "Properties for JavaScript Prototypes. Class based. Extended by a Signal implementation.",
+	"version": "0.3.0",
+	"keywords": ["object", "properties", "class", "oo", "signals"],
+	"main": "lib/properties.js",
+	"maintainers": [{
+		"name": "Tobiasz Cudnik",
+		"email": "tobiasz.cudnik@gmail.com",
+		"web": "http://github.com/TobiaszCudnik"
+	}],
+	"contributors": [{
+		"name": "Tobiasz Cudnik",
+		"email": "tobiasz.cudnik@gmail.com",
+		"web": "http://github.com/TobiaszCudnik"
+	}],
+	"repositories": [{
+	  "type": "git",
+	  "url": "http://github.com/TobiaszCudnik/jsprops.git"
+	}],
+	"bugs": "https://github.com/TobiaszCudnik/jsprops/issues/new",
+	"licenses": [{
+     "type": "MIT",
+     "url": "http://www.opensource.org/licenses/MIT"
+	}],
+	"dependencies": {
+		"clone": "0.0.4"
+	},
+	"devdependencies": {
+		"mocha": "0.12.1",
+		"sinon-expect": "0.1.0"
+	}
+}
