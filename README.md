@@ -100,4 +100,4 @@ Klass.prototype.baz = property('woof', {
 
 
 ## Contracts
-This library provides contracts (read - runtime type checking) based on [contracts.coffee](http://disnetdev.com/contracts.coffee/) library. There's a special build for that, so don't worry when using the default one. To make it working a global flag `global.contracts` is needed to be true.
+This library provides contracts (read - runtime type checking) based on [contracts.coffee](http://disnetdev.com/contracts.coffee/) library. There's a special build for that, so don't worry when using the default one. To make it work, a flag `global.contracts` is needed.
