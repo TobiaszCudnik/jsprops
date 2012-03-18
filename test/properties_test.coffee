@@ -4,7 +4,7 @@ expect = require('sinon-expect').enhance expect, sinon, 'was'
 i = require('util').inspect
 e = require('eyes').inspect
 
-jsprops = require './properties'
+jsprops = require '../src/properties'
 signal = jsprops.signal
 property = jsprops.property
 Signal = jsprops.Signal
