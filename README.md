@@ -5,7 +5,7 @@ Library provides class based properties that can be bound directly to a prototyp
 
 Additionally, we can easily inherit from Properties class, extending it by our own getters/setter logic.
 
-Default property value is inited in a lazy way, first time it's accessed.
+Default property's value is inited in a lazy way, first time it's accessed.
 
 **Example**
 
@@ -21,7 +21,7 @@ class Klass
 	)
 	woof: property('woof',
 		init: (set) -> set null
-		get: (get) -> return get().replace /z/, 'b'
+		get: (get) -> get().replace /z/, 'b'
 		set: (set, val) ->
 			set val.replace /a/, 'b'
 		'dev_value'
@@ -36,9 +36,9 @@ instance.foo() # returns 'bar'
 Repeated name in a declaration is required by the design.
 
 ## Signals
-Signals are extended properties, adding nice bindings to an event emitter. An interesting feature is the support for inheritance. You can define an overriding signal in a child class, while still preserving listener defined in the super class. The only condition is the requirement of using `@signal` instead of `signal` (needed for prototype chain resolution).
+Signals are extended properties, adding nice bindings to an event emitter. An interesting feature is the support for inheritance. You can define an overriding signal in a child class, while still preserving listener defined in the super class. The only condition is the requirement of using `@signal` instead of `signal` (needed for a prototype chain resolution).
 
-For signals, **set** is an emit and **get** returns temp object with binding functions (on, once) and init. All of them can be defined inside a declaration. They are also compatible with [EventEmitter2Async](https://github.com/TobiaszCudnik/EventEmitter2Async) (with callback and after/before events). Additionally, each signal needs to be initialized (manually or using SignalsMixin#initSignals).
+For signals, **set** is an emit and **get** returns temp object with binding functions (on, once) and an init function. All of them can be defined inside a declaration. They are also compatible with [EventEmitter2Async](https://github.com/TobiaszCudnik/EventEmitter2Async) (with callback and after/before events). Additionally, each signal needs to be initialized (manually or using SignalsMixin#initSignals).
 
 **Example**
 
@@ -48,14 +48,14 @@ For signals, **set** is an emit and **get** returns temp object with binding fun
 	SignalsMixin
 } = require 'jsprops'
 
-# this example actually lacks event emitter, but mixins are out of scope of it
+# This example actually lacks event emitter, but mixins are out of it's scope.
 class Klass extends SignalsMixin
 	foo: signal('foo',
 		on: -> console.log 'klass1'
 	)
 
-	on: -> # forward to composed event emitter
-	emit: -> # forward to composed event emitter
+	on: -> # forward to a composed event emitter
+	emit: -> # forward to a composed event emitter
 
 class Klass2 extends Klass
 	constructor: ->
@@ -98,6 +98,9 @@ Klass.prototype.baz = property('woof', {
 )
 ```
 
+## Install
+
+    npm install jsprops
 
 ## Contracts
 This library provides contracts (read - runtime type checking) based on [contracts.coffee](http://disnetdev.com/contracts.coffee/) library. There's a special build for that, so don't worry when using the default one. To make it work, a flag `global.contracts` is needed.
