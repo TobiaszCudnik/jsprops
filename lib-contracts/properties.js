@@ -1,15 +1,9 @@
-
-((function(cb) {
-  if (typeof(define) === 'function' && define.amd) {
-    require(['contracts'], cb);
-  } else if (typeof(require) === 'function') {
-    cb(require('contracts.js'));
-  } else {
-    cb(window.contracts);
-  }
-})(function(__contracts) {
-  var Undefined, Null, Num, Bool, Str, Odd, Even, Pos, Nat, Neg, Self, Any, None, __define, __require, __exports;
-
+(function() {var __contracts, Undefined, Null, Num, Bool, Str, Odd, Even, Pos, Nat, Neg, Self, Any, None, __old_exports, __old_require;
+if (typeof(window) !== 'undefined' && window !== null) {
+  __contracts = window.Contracts;
+} else {
+  __contracts = require('contracts.js');
+}
 Undefined =  __contracts.Undefined;
 Null      =  __contracts.Null;
 Num       =  __contracts.Num;
@@ -24,45 +18,19 @@ Self      =  __contracts.Self;
 Any       =  __contracts.Any;
 None      =  __contracts.None;
 
-if (typeof(define) === 'function' && define.amd) {
-  // we're using requirejs
-
-  // Allow for anonymous functions
-  __define = function(name, deps, callback) {
-    var cb, wrapped_callback;
-
-    if(typeof(name) !== 'string') {
-      cb = deps;
-    } else {
-      cb = callback;
-    }
-
-
-    wrapped_callback = function() {
-      var i, ret, used_arguments = [];
-      for (i = 0; i < arguments.length; i++) {
-        used_arguments[i] = __contracts.use(arguments[i], "src/properties.coffee");
-      }
-      ret = cb.apply(this, used_arguments);
-      return __contracts.setExported(ret, "src/properties.coffee");
-    };
-
-    if(!Array.isArray(deps)) {
-      deps = wrapped_callback;
-    }
-    define(name, deps, wrapped_callback);
-  };
-} else if (typeof(require) !== 'undefined' && typeof(exports) !== 'undefined') {
-  // we're using commonjs
-
-  __exports = __contracts.exports("src/properties.coffee", exports)
-  __require = function(module) {
-    module = require.apply(this, arguments);
+if (typeof(exports) !== 'undefined' && exports !== null) {
+  __old_exports = exports;
+  exports = __contracts.exports("src/properties.coffee", __old_exports)
+}
+if (typeof(require) !== 'undefined' && require !== null) {
+  __old_require = require;
+  require = function(module) {
+    module = __old_require.apply(this, arguments);
     return __contracts.use(module, "src/properties.coffee");
   };
 }
-  (function(define, require, exports) {
-      var PropertiesMixin, Property, Signal, SignalsMixin, TProperty, TPropertyClass, TPropertyMethod, TSignal, TSignalClass, TSignalMethod, Tcontr, Tproperty, Tsignal, clone, prop, _ref, _ref2, _ref3,
+(function() {
+  var PropertiesMixin, Property, Signal, SignalsMixin, TProperty, TPropertyClass, TPropertyMethod, TSignal, TSignalClass, TSignalMethod, Tcontr, Tproperty, Tsignal, clone, prop, property, signal, _ref, _ref2, _ref3,
     __slice = Array.prototype.slice,
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
@@ -74,24 +42,23 @@ if (typeof(define) === 'function' && define.amd) {
     _ref = require('./contracts/properties'), TPropertyClass = _ref.TPropertyClass, TPropertyMethod = _ref.TPropertyMethod, TSignalClass = _ref.TSignalClass, TSignalMethod = _ref.TSignalMethod, TProperty = _ref.TProperty, TSignal = _ref.TSignal, Tproperty = _ref.Tproperty, Tsignal = _ref.Tsignal;
   }
 
-  Property = __contracts.guard(TPropertyClass,(function() {
+  Property = __contracts.guard(TPropertyClass,Property = (function() {
 
-    _Class.prototype.value = void 0;
+    Property.prototype.value = void 0;
 
-    _Class.prototype.getter_args_length_ = 0;
+    Property.prototype.getter_args_length_ = 0;
 
-    _Class.prototype.property_ = null;
+    Property.prototype.property_ = null;
 
-    _Class.create = function(name, data, def_value) {
+    Property.create = function(name, data, def_value) {
       return new Property(name, data, def_value);
     };
 
-    _Class.property = function(name, data, def_value) {
-      var a;
-      return a = Property.create(name, data, def_value).property();
+    Property.property = function(name, data, def_value) {
+      return Property.create(name, data, def_value).property();
     };
 
-    function _Class(name, data, def_value) {
+    function Property(name, data, def_value) {
       var get, getter, getter_args_length_, init, initialize, set, setter;
       name = this.setName(name);
       getter_args_length_ = this.getter_args_length_;
@@ -118,11 +85,11 @@ if (typeof(define) === 'function' && define.amd) {
       this.property_.constructor = this.constructor;
     }
 
-    _Class.prototype.property = function() {
+    Property.prototype.property = function() {
       return this.property_;
     };
 
-    _Class.prototype.parseData = function(data, def_value) {
+    Property.prototype.parseData = function(data, def_value) {
       var def_value_ref, init;
       if (def_value == null) def_value = void 0;
       if ((data != null ? data.constructor : void 0) === Function) {
@@ -143,17 +110,17 @@ if (typeof(define) === 'function' && define.amd) {
       return data;
     };
 
-    _Class.prototype.initialize = function(name, init) {
+    Property.prototype.initialize = function(name, init) {
       if (this[name + '_'] === void 0) return this[name + '_'] = init.apply(this);
     };
 
-    _Class.prototype.setObjectValue = function(property) {
+    Property.prototype.setObjectValue = function(property) {
       return function(v) {
         return this[property + '_'] = v;
       };
     };
 
-    _Class.prototype.getObjectValue = function(property) {
+    Property.prototype.getObjectValue = function(property) {
       return function() {
         return this[property + '_'];
       };
@@ -163,7 +130,7 @@ if (typeof(define) === 'function' && define.amd) {
     	Prepend an internal setter / getter to the public one.
     */
 
-    _Class.prototype.preparePassedFunction = function(fn, method) {
+    Property.prototype.preparePassedFunction = function(fn, method) {
       return function() {
         var args;
         args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
@@ -172,30 +139,30 @@ if (typeof(define) === 'function' && define.amd) {
       };
     };
 
-    _Class.prototype.setName = function(name) {
+    Property.prototype.setName = function(name) {
       this.name = name;
       return this.getName();
     };
 
-    _Class.prototype.getName = function() {
+    Property.prototype.getName = function() {
       return this.name;
     };
 
-    _Class.prototype.getGetter = function(get) {
+    Property.prototype.getGetter = function(get) {
       return get;
     };
 
-    _Class.prototype.getSetter = function(set) {
+    Property.prototype.getSetter = function(set) {
       return set;
     };
 
-    _Class.prototype.getInit = function(set) {
+    Property.prototype.getInit = function(set) {
       return function() {
         return set.call(this, null);
       };
     };
 
-    return _Class;
+    return Property;
 
   })());
 
@@ -214,29 +181,29 @@ if (typeof(define) === 'function' && define.amd) {
   this.signal().init()
   */
 
-  Signal = __contracts.guard(TSignalClass,(function(_super) {
+  Signal = __contracts.guard(TSignalClass,Signal = (function(_super) {
 
-    __extends(_Class, _super);
+    __extends(Signal, _super);
 
-    _Class.prototype.getter_args_length_ = 0;
+    Signal.prototype.getter_args_length_ = 0;
 
-    function _Class(name, data, context) {
+    function Signal(name, data, context) {
       if (context == null) context = null;
-      _Class.__super__.constructor.apply(this, arguments);
+      Signal.__super__.constructor.apply(this, arguments);
       this.property_.is_signal = true;
     }
 
-    _Class.create = function(name, data, ctx) {
+    Signal.create = function(name, data, ctx) {
       return new Signal(name, data, ctx);
     };
 
-    _Class.property = function(name, data, ctx) {
+    Signal.property = function(name, data, ctx) {
       return Signal.create(name, data, ctx).property();
     };
 
-    _Class.prototype.initialize = null;
+    Signal.prototype.initialize = null;
 
-    _Class.prototype.parseData = function(data, ctx) {
+    Signal.prototype.parseData = function(data, ctx) {
       var init, old_init, signal;
       if (!data) return {};
       if ((data != null ? data.constructor : void 0) === Function) {
@@ -273,23 +240,23 @@ if (typeof(define) === 'function' && define.amd) {
       return data;
     };
 
-    _Class.prototype.getGetter = function(get) {
+    Signal.prototype.getGetter = function(get) {
       return function() {
         return get.call(this);
       };
     };
 
-    _Class.prototype.getInit = function() {
+    Signal.prototype.getInit = function() {
       return function() {};
     };
 
-    _Class.prototype.getSetter = function(set) {
+    Signal.prototype.getSetter = function(set) {
       return function(arg1, arg2, next) {
         return set.apply(this, arguments);
       };
     };
 
-    _Class.prototype.setObjectValue = function(property) {
+    Signal.prototype.setObjectValue = function(property) {
       return function() {
         var args;
         args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
@@ -298,7 +265,7 @@ if (typeof(define) === 'function' && define.amd) {
       };
     };
 
-    _Class.prototype.getObjectValue = function(property) {
+    Signal.prototype.getObjectValue = function(property) {
       return function() {
         var _this = this;
         return {
@@ -323,7 +290,7 @@ if (typeof(define) === 'function' && define.amd) {
       };
     };
 
-    return _Class;
+    return Signal;
 
   })(Property));
 
@@ -391,14 +358,18 @@ if (typeof(define) === 'function' && define.amd) {
 
   })();
 
+  property = Property.property;
+
+  signal = Signal.property;
+
   module.exports = {
     Property: Property,
     Signal: Signal,
     PropertiesMixin: PropertiesMixin,
     SignalsMixin: SignalsMixin,
-    property: Property.property,
-    signal: Signal.property
+    property: property,
+    signal: signal
   };
 
-  }).call(this, __define, __require, __exports);
-}));
+}).call(this);
+}).call(this);

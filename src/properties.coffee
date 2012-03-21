@@ -13,14 +13,15 @@ if global.contracts
 	} = require './contracts/properties'
 
 Property :: TPropertyClass
-Property = class
+Property = class Property
 	value: undefined,
 	getter_args_length_: 0,
 	property_: null,
 
-	@create: (name, data, def_value) -> new Property name, data, def_value
+	@create: (name, data, def_value) ->
+		new Property name, data, def_value
 	@property: (name, data, def_value) ->
-		a = Property.create(name, data, def_value).property()
+		Property.create(name, data, def_value).property()
 
 	constructor: (name, data, def_value) ->
 		name = @setName name
@@ -118,7 +119,7 @@ in like so:
 this.signal().init()
 ###
 Signal :: TSignalClass
-Signal = class extends Property
+Signal = class Signal extends Property
 	getter_args_length_: 0,
 
 	constructor: (name, data, context = null) ->
@@ -126,8 +127,10 @@ Signal = class extends Property
 		@property_.is_signal = yes
 
 	# FIXME
-	@create: (name, data, ctx) -> new Signal(name, data, ctx)
-	@property: (name, data, ctx) -> Signal.create(name, data, ctx).property()
+	@create: (name, data, ctx) ->
+		new Signal(name, data, ctx)
+	@property: (name, data, ctx) ->
+		Signal.create(name, data, ctx).property()
 
 	# empty override
 	initialize: null
@@ -224,11 +227,15 @@ class SignalsMixin
 				@["#{prop}_"]
 			@[prop].init.call @, next
 
-module.exports =
-	Property: Property
-	Signal: Signal
-	PropertiesMixin: PropertiesMixin
-	SignalsMixin: SignalsMixin
+property = Property.property
+signal = Signal.property
 
-	property: Property.property
-	signal: Signal.property
+module.exports = {
+	Property
+	Signal
+	PropertiesMixin
+	SignalsMixin
+
+	property
+	signal
+}

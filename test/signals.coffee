@@ -8,7 +8,7 @@ expect = require('sinon-expect').enhance expect, sinon, 'was'
 	Signal
 	PropertiesMixin
 	SignalsMixin
-} = require '../src/properties'
+} = require '../lib/properties.js'
 
 describe 'Signals', ->
 	scope = obj = Klass = spy = null

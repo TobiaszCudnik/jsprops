@@ -10,7 +10,7 @@
 
   expect = require('sinon-expect').enhance(expect, sinon, 'was');
 
-  _ref = require('../src/properties'), signal = _ref.signal, property = _ref.property, Signal = _ref.Signal, PropertiesMixin = _ref.PropertiesMixin, SignalsMixin = _ref.SignalsMixin;
+  _ref = require('../lib/properties.js'), signal = _ref.signal, property = _ref.property, Signal = _ref.Signal, PropertiesMixin = _ref.PropertiesMixin, SignalsMixin = _ref.SignalsMixin;
 
   describe('Signals', function() {
     var Klass, obj, scope, spy;
