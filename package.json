@@ -2,7 +2,7 @@
 	"name": "jsprops",
 	"description": "Properties for JavaScript Prototypes. Class based. Extended by a Signal implementation.",
 	"version": "0.3.0",
-	"keywords": ["object", "properties", "class", "oo", "signals"],
+	"keywords": ["object", "properties", "class", "oo", "signals", "events"],
 	"main": "lib/properties.js",
 	"maintainers": [{
 		"name": "Tobiasz Cudnik",

@@ -24,7 +24,7 @@ class Klass
 		get: (get) -> get().replace /z/, 'b'
 		set: (set, val) ->
 			set val.replace /a/, 'b'
-		'dev_value'
+		'def_value'
 	)
 
 instance = new Klass
@@ -94,7 +94,7 @@ Klass.prototype.baz = property('woof', {
 		},
 		set: (set, val) ->
 			set(val.replace(/a/, 'b'))
-	}, 'dev_value'
+	}, 'def_value'
 )
 ```
 
