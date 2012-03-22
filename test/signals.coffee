@@ -78,6 +78,10 @@ describe 'Signals', ->
 			expect(obj.on).was.calledWith 'bar2'
 			expect(scope.bar2_init).was.called()
 
+		# TODO
+#		it 'should call init preserving the object context', ->
+#		it 'should call listeners preserving the object context', ->
+
 		describe 'aop', ->
 			it 'should allow to bind to a before event', ->
 				obj.foo().before ->

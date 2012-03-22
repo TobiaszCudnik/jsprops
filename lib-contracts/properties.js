@@ -1,9 +1,15 @@
-(function() {var __contracts, Undefined, Null, Num, Bool, Str, Odd, Even, Pos, Nat, Neg, Self, Any, None, __old_exports, __old_require;
-if (typeof(window) !== 'undefined' && window !== null) {
-  __contracts = window.Contracts;
-} else {
-  __contracts = require('contracts.js');
-}
+
+((function(cb) {
+  if (typeof(define) === 'function' && define.amd) {
+    require(['contracts'], cb);
+  } else if (typeof(require) === 'function') {
+    cb(require('contracts.js'));
+  } else {
+    cb(window.contracts);
+  }
+})(function(__contracts) {
+  var Undefined, Null, Num, Bool, Str, Odd, Even, Pos, Nat, Neg, Self, Any, None, __define, __require, __exports;
+
 Undefined =  __contracts.Undefined;
 Null      =  __contracts.Null;
 Num       =  __contracts.Num;
@@ -18,19 +24,45 @@ Self      =  __contracts.Self;
 Any       =  __contracts.Any;
 None      =  __contracts.None;
 
-if (typeof(exports) !== 'undefined' && exports !== null) {
-  __old_exports = exports;
-  exports = __contracts.exports("src/properties.coffee", __old_exports)
-}
-if (typeof(require) !== 'undefined' && require !== null) {
-  __old_require = require;
-  require = function(module) {
-    module = __old_require.apply(this, arguments);
+if (typeof(define) === 'function' && define.amd) {
+  // we're using requirejs
+
+  // Allow for anonymous functions
+  __define = function(name, deps, callback) {
+    var cb, wrapped_callback;
+
+    if(typeof(name) !== 'string') {
+      cb = deps;
+    } else {
+      cb = callback;
+    }
+
+
+    wrapped_callback = function() {
+      var i, ret, used_arguments = [];
+      for (i = 0; i < arguments.length; i++) {
+        used_arguments[i] = __contracts.use(arguments[i], "src/properties.coffee");
+      }
+      ret = cb.apply(this, used_arguments);
+      return __contracts.setExported(ret, "src/properties.coffee");
+    };
+
+    if(!Array.isArray(deps)) {
+      deps = wrapped_callback;
+    }
+    define(name, deps, wrapped_callback);
+  };
+} else if (typeof(require) !== 'undefined' && typeof(exports) !== 'undefined') {
+  // we're using commonjs
+
+  __exports = __contracts.exports("src/properties.coffee", exports)
+  __require = function(module) {
+    module = require.apply(this, arguments);
     return __contracts.use(module, "src/properties.coffee");
   };
 }
-(function() {
-  var PropertiesMixin, Property, Signal, SignalsMixin, TProperty, TPropertyClass, TPropertyMethod, TSignal, TSignalClass, TSignalMethod, Tcontr, Tproperty, Tsignal, clone, prop, property, signal, _ref, _ref2, _ref3,
+  (function(define, require, exports) {
+      var PropertiesMixin, Property, Signal, SignalsMixin, TProperty, TPropertyClass, TPropertyMethod, TSignal, TSignalClass, TSignalMethod, Tcontr, Tproperty, Tsignal, clone, prop, property, signal, _ref, _ref2, _ref3,
     __slice = Array.prototype.slice,
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
@@ -127,7 +159,7 @@ if (typeof(require) !== 'undefined' && require !== null) {
     };
 
     /**
-    	Prepend an internal setter / getter to the public one.
+    	Prepend an internal setter / getter for the public one.
     */
 
     Property.prototype.preparePassedFunction = function(fn, method) {
@@ -215,18 +247,25 @@ if (typeof(require) !== 'undefined' && require !== null) {
         old_init = data.init;
         signal = this.getName();
         data.init = function(set, next) {
-          var next_org, super_signal, _ref3;
+          var next_org, super_signal, _ref3,
+            _this = this;
           if (old_init) {
             next_org = next;
             next = function() {
-              return old_init(set, next_org);
+              return old_init.call(_this, set, next_org);
             };
           }
-          if (data != null ? data.on : void 0) this[signal]().on(data.on);
-          if (data != null ? data.once : void 0) this[signal]().once(data.once);
-          if (data != null ? data.after : void 0) this[signal]().after(data.after);
+          if (data != null ? data.on : void 0) {
+            this[signal]().on(data.on.bind(this));
+          }
+          if (data != null ? data.once : void 0) {
+            this[signal]().once(data.once.bind(this));
+          }
+          if (data != null ? data.after : void 0) {
+            this[signal]().after(data.after.bind(this));
+          }
           if (data != null ? data.before : void 0) {
-            this[signal]().before(data.before);
+            this[signal]().before(data.before.bind(this));
           }
           this["" + signal + "_"] = true;
           super_signal = ctx != null ? (_ref3 = ctx.__super__) != null ? _ref3[signal] : void 0 : void 0;
@@ -371,5 +410,5 @@ if (typeof(require) !== 'undefined' && require !== null) {
     signal: signal
   };
 
-}).call(this);
-}).call(this);
+  }).call(this, __define, __require, __exports);
+}));

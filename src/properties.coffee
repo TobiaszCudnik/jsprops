@@ -91,7 +91,7 @@ Property = class Property
 		-> @[ property + '_' ]
 
 	###*
-	Prepend an internal setter / getter to the public one.
+	Prepend an internal setter / getter for the public one.
 	###
 	preparePassedFunction: (fn, method) ->
 		(args...) ->
@@ -149,11 +149,11 @@ Signal = class Signal extends Property
 			data.init = (set, next) ->
 				if old_init
 					next_org = next
-					next = -> old_init set, next_org
-				@[ signal ]().on(data.on) if data?.on
-				@[ signal ]().once(data.once) if data?.once
-				@[ signal ]().after(data.after) if data?.after
-				@[ signal ]().before(data.before) if data?.before
+					next = => old_init.call @, set, next_org
+				@[ signal ]().on(data.on.bind @) if data?.on
+				@[ signal ]().once(data.once.bind @) if data?.once
+				@[ signal ]().after(data.after.bind @) if data?.after
+				@[ signal ]().before(data.before.bind @) if data?.before
 				# Mark signal as inited
 				@["#{signal}_"] = yes
 				super_signal = ctx?.__super__?[ signal ]
