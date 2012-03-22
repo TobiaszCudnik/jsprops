@@ -6,7 +6,7 @@ all: build
 
 build:
 	$(COFFEE) -c --contracts -o lib-contracts src
-	$(COFFEE) -c -o lib src
+	$(COFFEE) -c -o lib src/properties.coffee
 	$(COFFEE) -c test
 
 test:
