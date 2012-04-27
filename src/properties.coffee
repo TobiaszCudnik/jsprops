@@ -1,4 +1,5 @@
 clone = require 'clone'
+require 'sugar'
 
 if global.contracts
 	{
@@ -171,14 +172,16 @@ Signal = class Signal extends Property
 	# Fake init value, empty function to meet the contract.
 	getInit: -> ->
 	# Trigger a signal, passing params and the callback.
-	getSetter: (set) ->
-		(arg1, arg2, next) ->
-			set.apply @, arguments
+	getSetter: (set) -> set
+#		(arg1, arg2, next) ->
+#			.bind @, arguments
 
 	# Return function triggering the signal.
 	setObjectValue: (property) ->
 		(args...) ->
 			args.unshift property
+			if not @emit
+				debugger
 			@emit.apply @, args
 
 	# Return a signal obj, with some event functions.
@@ -199,6 +202,15 @@ if global.contracts
 			prop is 'constructor'
 		Signal::[prop] :: Tcontr
 		Signal::[prop] = Signal::[prop]
+
+
+# trying to name anon functions
+#Object.keys( Property.prototype ).forEach (name) ->
+#	func = Property.prototype[ name ]
+#	return if func not instanceof Function
+#	console.log name
+#	func.displayValue = name
+#	func.displayName = name
 
 # Inheritance helpers. Extending will also work for constructors (recursive).
 

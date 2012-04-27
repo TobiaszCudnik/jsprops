@@ -1,5 +1,5 @@
 (function() {
-  var PropertiesMixin, Signal, SignalsMixin, expect, property, signal, sinon, _ref;
+  var PropertiesMixin, Signal, SignalsMixin, expect, properties_file, property, signal, sinon, _ref;
 
   sinon = require('sinon');
 
@@ -7,7 +7,9 @@
 
   expect = require('sinon-expect').enhance(expect, sinon, 'was');
 
-  _ref = require('../lib/properties.js'), signal = _ref.signal, property = _ref.property, Signal = _ref.Signal, PropertiesMixin = _ref.PropertiesMixin, SignalsMixin = _ref.SignalsMixin;
+  properties_file = global.contracts ? '../lib-contracts/properties.js' : '../lib/properties.js';
+
+  _ref = require(properties_file), signal = _ref.signal, property = _ref.property, Signal = _ref.Signal, PropertiesMixin = _ref.PropertiesMixin, SignalsMixin = _ref.SignalsMixin;
 
   describe('Properties', function() {
     var Klass, obj;

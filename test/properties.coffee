@@ -2,13 +2,16 @@ sinon = require 'sinon'
 expect = require 'expect.js'
 expect = require('sinon-expect').enhance expect, sinon, 'was'
 
+properties_file = if global.contracts then '../lib-contracts/properties.js'
+else '../lib/properties.js'
+
 {
 	signal
 	property
 	Signal
 	PropertiesMixin
 	SignalsMixin
-} = require '../lib/properties.js'
+} = require properties_file
 
 describe 'Properties', ->
 	obj = Klass = null

@@ -1,15 +1,9 @@
-
-((function(cb) {
-  if (typeof(define) === 'function' && define.amd) {
-    require(['contracts'], cb);
-  } else if (typeof(require) === 'function') {
-    cb(require('contracts.js'));
-  } else {
-    cb(window.contracts);
-  }
-})(function(__contracts) {
-  var Undefined, Null, Num, Bool, Str, Odd, Even, Pos, Nat, Neg, Self, Any, None, __define, __require, __exports;
-
+(function() {var __contracts, Undefined, Null, Num, Bool, Str, Odd, Even, Pos, Nat, Neg, Self, Any, None, __old_exports, __old_require;
+if (typeof(window) !== 'undefined' && window !== null) {
+  __contracts = window.Contracts;
+} else {
+  __contracts = require('contracts.js');
+}
 Undefined =  __contracts.Undefined;
 Null      =  __contracts.Null;
 Num       =  __contracts.Num;
@@ -24,51 +18,27 @@ Self      =  __contracts.Self;
 Any       =  __contracts.Any;
 None      =  __contracts.None;
 
-if (typeof(define) === 'function' && define.amd) {
-  // we're using requirejs
-
-  // Allow for anonymous functions
-  __define = function(name, deps, callback) {
-    var cb, wrapped_callback;
-
-    if(typeof(name) !== 'string') {
-      cb = deps;
-    } else {
-      cb = callback;
-    }
-
-
-    wrapped_callback = function() {
-      var i, ret, used_arguments = [];
-      for (i = 0; i < arguments.length; i++) {
-        used_arguments[i] = __contracts.use(arguments[i], "src/properties.coffee");
-      }
-      ret = cb.apply(this, used_arguments);
-      return __contracts.setExported(ret, "src/properties.coffee");
-    };
-
-    if(!Array.isArray(deps)) {
-      deps = wrapped_callback;
-    }
-    define(name, deps, wrapped_callback);
-  };
-} else if (typeof(require) !== 'undefined' && typeof(exports) !== 'undefined') {
-  // we're using commonjs
-
-  __exports = __contracts.exports("src/properties.coffee", exports)
-  __require = function(module) {
-    module = require.apply(this, arguments);
+if (typeof(exports) !== 'undefined' && exports !== null) {
+  __old_exports = exports;
+  exports = __contracts.exports("src/properties.coffee", __old_exports)
+}
+if (typeof(require) !== 'undefined' && require !== null) {
+  __old_require = require;
+  require = function(module) {
+    module = __old_require.apply(this, arguments);
     return __contracts.use(module, "src/properties.coffee");
   };
 }
-  (function(define, require, exports) {
-      var PropertiesMixin, Property, Signal, SignalsMixin, TProperty, TPropertyClass, TPropertyMethod, TSignal, TSignalClass, TSignalMethod, Tcontr, Tproperty, Tsignal, clone, prop, property, signal, _ref, _ref2, _ref3,
+(function() {
+  var PropertiesMixin, Property, Signal, SignalsMixin, TProperty, TPropertyClass, TPropertyMethod, TSignal, TSignalClass, TSignalMethod, Tcontr, Tproperty, Tsignal, clone, prop, property, signal, _ref, _ref2, _ref3,
     __slice = Array.prototype.slice,
     __hasProp = Object.prototype.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; },
     __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   clone = require('clone');
+
+  require('sugar');
 
   if (global.contracts) {
     _ref = require('./contracts/properties'), TPropertyClass = _ref.TPropertyClass, TPropertyMethod = _ref.TPropertyMethod, TSignalClass = _ref.TSignalClass, TSignalMethod = _ref.TSignalMethod, TProperty = _ref.TProperty, TSignal = _ref.TSignal, Tproperty = _ref.Tproperty, Tsignal = _ref.Tsignal;
@@ -290,9 +260,7 @@ if (typeof(define) === 'function' && define.amd) {
     };
 
     Signal.prototype.getSetter = function(set) {
-      return function(arg1, arg2, next) {
-        return set.apply(this, arguments);
-      };
+      return set;
     };
 
     Signal.prototype.setObjectValue = function(property) {
@@ -300,6 +268,7 @@ if (typeof(define) === 'function' && define.amd) {
         var args;
         args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
         args.unshift(property);
+        if (!this.emit) debugger;
         return this.emit.apply(this, args);
       };
     };
@@ -410,5 +379,5 @@ if (typeof(define) === 'function' && define.amd) {
     signal: signal
   };
 
-  }).call(this, __define, __require, __exports);
-}));
+}).call(this);
+}).call(this);
