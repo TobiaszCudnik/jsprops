@@ -68,7 +68,8 @@ class Klass2 extends Klass
 instance = new Klass
 instance.foo().on ->
 	console.log 'listener'
-instance.foo() # prints 'klass1', 'klass2', 'listener'
+instance.foo ->
+	# prints 'klass1', 'klass2', 'listener'
 ```
 
 ## JavaScript examples
