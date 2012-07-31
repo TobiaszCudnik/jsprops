@@ -84,7 +84,7 @@ Property = class Property
 	initialize: (name, init) ->
 		# init property when undefined
 		if @[ name + '_' ] is undefined
-			@[ name + '_' ] = init.apply @
+			init.apply @
 
 	setObjectValue: (property) ->
 		(v) -> @[ property + '_' ] = v
